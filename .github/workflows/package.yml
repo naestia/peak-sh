@@ -22,10 +22,7 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: make install-dev
-
-      - name: Package extension
-        run: make package
+        run: make release
 
       - name: Get VSIX filename
         id: vsix
