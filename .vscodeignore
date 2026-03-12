@@ -1,0 +1,11 @@
+.github/
+.vscode/
+src/
+node_modules/
+*.vsix
+
+.gitignore
+.vscodeignore
+Makefile
+tsconfig.json
+package-lock.json

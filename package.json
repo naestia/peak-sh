@@ -1,0 +1,90 @@
+{
+  "name": "peak-sh",
+  "displayName": "Peak.sh",
+  "description": "Inline external scripts referenced in GitHub Actions workflows",
+  "version": "0.1.0",
+  "engines": { "vscode": "^1.85.0" },
+  "categories": ["Other"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/peak-sh"
+  },
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguage:yaml",
+    "workspaceContains:**/.github/workflows/*.yml",
+    "workspaceContains:*/action.yml"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "colors": [
+      {
+        "id": "peakSh.codeLenseWarning",
+        "description": "Color for unresolved script warnings",
+        "defaults": {
+          "dark": "#e5c07b",
+          "light": "#c18401",
+          "highContrast": "#e5c07b"
+        }
+      },
+      {
+        "id": "peakSh.scriptDecoration",
+        "description": "Color for script file decorations",
+        "defaults": {
+          "dark": "#00D9FF",
+          "light": "#0088AA",
+          "highContrast": "#00FFFF"
+        }
+      },
+      {
+        "id": "editorCodeLens.foreground",
+        "description": "Foreground color for CodeLens",
+        "defaults": {
+          "dark": "#00D9FF",
+          "light": "#0088AA",
+          "highContrast": "#00FFFF"
+        }
+      }
+    ],
+    "commands": [
+      {
+        "command": "gha-script-inliner.toggleAll",
+        "title": "GHA: Toggle All Inlined Scripts"
+      }
+    ],
+    "configuration": {
+      "title": "Peak.sh",
+      "properties": {
+        "editor.codeLensFontSize": {
+          "type": "number",
+          "default": 16
+        },
+        "peakSh.autoExpand": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically expand scripts when opening a workflow file"
+        },
+        "peakSh.borderColor": {
+          "type": "string",
+          "default": "#00BCD4",
+          "description": "Left border color for inlined script blocks"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.0",
+    "@vscode/vsce": "^3.2.0"
+  },
+  "overrides": {
+    "glob": "^10.4.5",
+    "inflight": "npm:lru-cache@^10.4.3"
+  }
+}

@@ -1,0 +1,18 @@
+# Compiled output
+out/
+
+# Dependencies
+node_modules/
+
+# Packaged extension
+*.vsix
+
+# TypeScript cache
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode-test/
