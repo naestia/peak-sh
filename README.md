@@ -1,67 +1,99 @@
-# Peak.sh — local install
+# Peak.sh
 
-## Structure
-```
-gha-script-inliner/
-  src/
-    extension.ts
-  package.json
-  tsconfig.json
-```
+A VS Code extension that makes it easier to work with GitHub Actions workflows by providing quick access to external scripts referenced in your workflow files.
 
-## Setup
+## Features
+
+✨ **CodeLens Integration**
+- Inline clickable links above `run:` lines that reference shell scripts
+- Shows script name and line count
+- Click to open the script in a side-by-side editor
+- Clear warnings for missing or unresolvable scripts
+
+📄 **Hover Previews**
+- Hover over any `run:` line that references a script to see its contents
+- Full syntax-highlighted preview in a hover tooltip
+
+🔍 **Smart Script Resolution**
+- Resolves relative paths from workspace root or workflow file location
+- Supports GitHub Actions `${{ github.action_path }}` variable
+- Automatically finds scripts in `.github/scripts/` directories
+- Scans for scripts in action directories (next to `action.yml` files)
+
+## Installation
+
+### From Source
 
 ```bash
 # 1. Install dependencies
 npm install
 
-# 2. Compile
+# 2. Compile TypeScript
 npm run compile
 
 # 3. Package as .vsix
-npx vsce package
+npm run package
 
 # 4. Install into VS Code
-  code --install-extension peak-sh-0.1.0.vsix
+code --install-extension peak-sh-0.1.0.vsix
 ```
 
-## Dev mode (no packaging needed)
-Open the folder in VS Code and press **F5** — this launches an Extension
-Development Host with the extension live-loaded.
+### Development Mode
+
+Open the project folder in VS Code and press **F5** to launch an Extension Development Host with the extension live-loaded.
 
 ## Usage
-- Open any `.github/workflows/*.yml` file — the extension will automatically detect script references
-- **Click on the CodeLens** to open the script in a new editor pane
-- **Hover over the `run:` line** to see a preview of the script content
-- `Ctrl+Shift+P` → **Peak.sh: Toggle All Inlined Scripts** to toggle on/off
 
-## Features
-✨ **Enhanced CodeLens**
-- 🔍 CodeLens links with file icons showing script name and line count
-- ⚠️ Clear warnings for missing scripts
-- 📄 Hover preview of script contents
+1. Open any GitHub Actions workflow file (`.github/workflows/*.yml`) or composite action (`*/action.yml`)
+2. The extension automatically activates and scans for script references
+3. **Click on CodeLens links** above `run:` lines to open scripts in a new editor pane
+4. **Hover over `run:` lines** to preview script contents
 
-## Settings
-| Setting | Default | Description |
-|---|---|---|
-| `peakSh.autoExpand` | `true` | Expand on file open |
-| `peakSh.borderColor` | `#00BCD4` | Left border accent color |
+## Supported Patterns
 
-## Customizing CodeLens Color
-The extension sets the CodeLens color to a bright cyan (`#00D9FF` in dark mode). If you want to customize it further, add this to your VSCode `settings.json`:
+The extension recognizes the following script reference patterns:
+
+```yaml
+# Local script (relative to workspace root)
+run: ./script.sh
+run: bash ./script.sh
+run: sh .github/scripts/deploy.sh
+
+# Action path variable (composite actions)
+run: bash "${{ github.action_path }}/scripts/setup.sh"
+run: sh ${{ github.action_path }}/scripts/build.sh
+```
+
+## Configuration
+
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `peakSh.autoExpand` | boolean | `true` | Automatically expand scripts when opening a workflow file |
+| `peakSh.borderColor` | string | `#00BCD4` | Left border color for inlined script blocks |
+
+### Customizing CodeLens Appearance
+
+The extension sets CodeLens to a bright cyan color (`#00D9FF` in dark mode, `#0088AA` in light mode). To customize:
 
 ```json
 {
   "workbench.colorCustomizations": {
-    "editorCodeLens.foreground": "#FF6B6B"  // Your custom color
+    "editorCodeLens.foreground": "#FF6B6B"
   }
 }
 ```
 
-## Supported patterns
-```yaml
-run: ./script.sh
-run: bash ./script.sh
-run: bash .github/scripts/deploy.sh
-run: sh ./scripts/build.sh
+## Project Structure
+
 ```
+peak-sh/
+├── src/
+│   └── extension.ts      # Main extension code
+├── package.json           # Extension manifest
+├── tsconfig.json          # TypeScript configuration
+└── README.md
+```
+
+## License
+
+MIT License - Copyright (c) 2026 Viktor Berg
